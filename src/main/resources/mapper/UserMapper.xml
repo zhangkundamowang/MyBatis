@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--映射的配置，namespace设置为接口的包名+类名-->
+<mapper namespace="com.qianfeng.mybatis.dao.UserMapper">
+
+    <!--配置结果映射 id是名称 type是映射的Java类型-->
+    <resultMap id="userMap" type="com.qianfeng.mybatis.entity.User">
+        <!--配置主键 property配置Java类的属性名 column表的列名 javaType配置属性类型，jdbcType字段类型-->
+        <id property="userId" column="user_id"></id>
+        <!--配置一般的列-->
+        <result property="username" column="username"></result>
+        <result property="realname" column="realname"></result>
+        <result property="address" column="address"></result>
+        <result property="tel" column="tel"></result>
+        <result property="pic" column="pic"></result>
+    <!--配置集合属性-->
+        <!--property配置集合名称,column配置查询集合所需要的列，select 配置包名类名方法名-->
+        <collection property="comments" column="user_id"
+                    select="com.qianfeng.mybatis.dao.CommentMapper.selectCommentsByUserId"></collection>
+    </resultMap>
+
+    <!--配置插入操作 id是Mapper接口中方法名，parameterType配置参数类型-->
+    <!--标签中配置SQL语句，占位符格式#{参数名} 参数名可以是对象的属性名-->
+    <insert id="insert" parameterType="com.qianfeng.mybatis.entity.User">
+        insert into tb_user(username, realname, address, tel)
+        values(#{username},#{realname},#{address},#{tel})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        delete from tb_user where user_id = #{userId}
+    </delete>
+
+    <select id="selectAll" resultMap="userMap">
+        select * from tb_user
+    </select>
+
+    <select id="selectById" parameterType="int" resultMap="userMap">
+        select * from tb_user where user_id = #{userId}
+    </select>
+
+    <select id="selectUser" parameterType="com.qianfeng.mybatis.entity.User"
+            resultMap="userMap">
+        select * from tb_user
+        <where>
+            <if test="username!=null and username!=''">
+                username =#{username}
+            </if>
+            <if test="realname!=null and realname!=''">
+                and realname = #{realname}
+            </if>
+            <if test="address!=null and address!=''">
+                and address = #{address}
+            </if>
+            <if test="tel!=null and tel!=''">
+                and tel = #{tel}
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.qianfeng.mybatis.entity.User">
+        update tb_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userId!=null and userId!=''">
+                user_id = #{userId},
+            </if>
+            <if test="username!=null and username!=''">
+                username = #{username},
+            </if>
+            <if test="realname!=null and realname!=''">
+                realname = #{realname},
+            </if>
+            <if test="address!=null and address!=''">
+                address = #{address},
+            </if>
+            <if test="tel!=null and tel!=''">
+                tel = #{tel},
+            </if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <select id="selectUserByUsernames" resultMap="userMap">
+        select * from tb_user
+        where username in
+        <foreach collection="usernames"
+                 item="name" open="("  close=")"
+                 separator="," index="i">
+            #{name}
+        </foreach>
+    </select>
+</mapper>
