@@ -25,17 +25,11 @@ public class MyBatisSpringTest {
     private CommentMapper commentMapper;
     @Test
     public void testUserMapper(){
-       /* List<User> users = userMapper.selectAll();
-        users.forEach((user)->System.out.println(user));*/
-       /*User user =userMapper.selectById(2);
-        System.out.println(user);
-        System.out.println(user.getComments());*/
         Comment comment=commentMapper.selectById(1);
         System.out.println(comment);
         System.out.println(comment.getUser().getRealname());
 
     }
-
 
     @Test
     public void testInsert(){
@@ -47,10 +41,9 @@ public class MyBatisSpringTest {
     @Test
     public void testSelectUser(){
         User user = new User();
-//        user.setUsername("freedom");
-//        user.setRealname("张三");
+        user.setUsername("江南");
         List<User> users = userMapper.selectUser(user);
-        users.forEach((u)->System.out.println(u));
+        users.forEach(s-> System.out.println(s));
     }
 
     @Test
@@ -58,7 +51,6 @@ public class MyBatisSpringTest {
         User user = new User();
         user.setUserId(1);
         user.setRealname("张大三");
-//        user.setAddress("南京");
         userMapper.update(user);
         User user1 = userMapper.selectById(1);
         System.out.println(user1);
@@ -71,7 +63,8 @@ public class MyBatisSpringTest {
         usernames.add("user2");
         usernames.add("freedom");
         List<User> users = userMapper.selectUserByUsernames(usernames);
-        System.out.println(users);
+       /* System.out.println(users);*/
+         users.forEach(user -> user.getUsername());
     }
 
 

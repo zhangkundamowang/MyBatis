@@ -1,6 +1,8 @@
 package com.qianfeng.mybatis;
 
+import com.qianfeng.mybatis.dao.CommentMapper;
 import com.qianfeng.mybatis.dao.UserMapper;
+import com.qianfeng.mybatis.entity.Comment;
 import com.qianfeng.mybatis.entity.User;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -23,9 +25,14 @@ public class MyBatisTest {
         //通过SqlSession创建代理对象
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         //调用插入功能
-//        mapper.insert(new User(0,"mybatis-user","老张","上海","18997776666","xxx.jpg"));
-        mapper.update(new User(1,"老张","老张三","上海","18997776666","xxx.jpg"));
-        mapper.delete(5);
+        //mapper.insert(new User(0,"mybatis-user","老张","上海","18997776666","xxx.jpg"));
+        User user=new User();
+        user.setUsername("老张");
+        user.setAddress("上海");
+        mapper.insert(user);
+        CommentMapper commentMapper= sqlSession.getMapper(CommentMapper.class);
+         commentMapper.delete(2);
+         mapper.selectById(2);
         //提交修改
         sqlSession.commit();
         //关闭Session
@@ -67,6 +74,7 @@ public class MyBatisTest {
         //通过工厂创建SqlSession对象（类似连接对象）
         SqlSession sqlSession = factory.openSession();
         SqlSession sqlSession2 = factory.openSession();
+        System.out.println(sqlSession);
         System.out.println(sqlSession==sqlSession2);
     }
 }

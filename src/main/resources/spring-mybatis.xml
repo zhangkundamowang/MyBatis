@@ -3,34 +3,36 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
-
+    <!--配置扫描组件-->
+    <context:component-scan base-package="com.qianfeng.mybatis"/>
+    <!-- 引入配置文件-->
+    <context:property-placeholder location="classpath:conf/*.properties"/>
     <!--配置数据源-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <!--配置数据源属性-->
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/wuyou?serverTimezone=CST&amp;useSSL=false"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
+        <property name="user" value="root"/>
+        <property name="password" value="kun032713"/>
         <property name="minPoolSize" value="10"/>
         <property name="maxPoolSize" value="100"/>
         <property name="initialPoolSize" value="10"/>
     </bean>
-   <!-- 引入配置文件-->
-    <context:property-placeholder location="classpath:conf/*.properties"></context:property-placeholder>
 
-    <!--配置工厂-->
+    <!--配置SqlSessionFactory对象-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--配置数据源属性-->
         <property name="dataSource" ref="dataSource"/>
         <!--mybatis分页设置-->
-      <!--  <property name="configLocation" value="classpath:"></property>
-       --> <!--配置实体类包-->
+        <!--  <property name="configLocation" value="classpath:"></property>-->
+        <!--配置实体类包-->
         <property name="typeAliasesPackage" value="com.qianfeng.mybatis.entity"/>
         <!--配置Mapper文件的位置 *通配符代表任意名称-->
         <property name="mapperLocations" value="classpath*:mapper/*Mapper.xml"/>
-        <!--Mybatis配置文件-->
-        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--Mybatis配置文件--><!--
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>-->
     </bean>
+
     <!--配置Mapper接口的扫描-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--配置Mybatis工厂的名称 -->
@@ -38,4 +40,12 @@
         <!--配置Mapper接口所在的包-->
         <property name="basePackage" value="com.qianfeng.mybatis.dao"/>
     </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
 </beans>

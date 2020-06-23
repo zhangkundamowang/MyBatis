@@ -5,7 +5,7 @@
 
     <!--配置结果映射 id是名称 type是映射的Java类型-->
     <resultMap id="userMap" type="com.qianfeng.mybatis.entity.User">
-        <!--配置主键 property配置Java类的属性名 column表的列名 javaType配置属性类型，jdbcType字段类型-->
+        <!--配置主键 column表的列名 javaType配置属性类型，jdbcType字段类型-->
         <id property="userId" column="user_id"></id>
         <!--配置一般的列-->
         <result property="username" column="username"></result>
@@ -13,12 +13,11 @@
         <result property="address" column="address"></result>
         <result property="tel" column="tel"></result>
         <result property="pic" column="pic"></result>
-    <!--配置集合属性-->
+        <!--配置集合属性-->
         <!--property配置集合名称,column配置查询集合所需要的列，select 配置包名类名方法名-->
         <collection property="comments" column="user_id"
                     select="com.qianfeng.mybatis.dao.CommentMapper.selectCommentsByUserId"></collection>
     </resultMap>
-
     <!--配置插入操作 id是Mapper接口中方法名，parameterType配置参数类型-->
     <!--标签中配置SQL语句，占位符格式#{参数名} 参数名可以是对象的属性名-->
     <insert id="insert" parameterType="com.qianfeng.mybatis.entity.User">
@@ -54,6 +53,7 @@
             <if test="tel!=null and tel!=''">
                 and tel = #{tel}
             </if>
+
         </where>
     </select>
 

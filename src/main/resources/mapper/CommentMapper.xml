@@ -14,7 +14,7 @@
         <result property="user_id" column="user_id"></result>
         <result property="nanny_id" column="nanny_id"></result>
         <!--配置一对一的用户对象-->
-        <association property="user" column="user_id" select="com.qianfeng.mybatis.dao.UserMapper.selectById"></association>
+        <association property="user" column="user_id" select="com.qianfeng.mybatis.dao.UserMapper.selectById"/>
     </resultMap>
 
     <select id="selectCommentsByUserId" parameterType="int" resultMap="commentMap">
@@ -23,4 +23,7 @@
    <select id="selectById" parameterType="int" resultMap="commentMap">
     select * from tb_comment where comment_id=#{comment_id}
    </select>
+    <delete id="delete" parameterType="int" >
+        delete  from  tb_comment where comment_id=#{comment_id}
+    </delete>
 </mapper>

@@ -11,4 +11,6 @@ import java.util.List;
 public interface CommentMapper {
     List<Comment> selectCommentsByUserId(int userId);
     Comment selectById(int commentId);
+
+    void delete(int commentId);
 }

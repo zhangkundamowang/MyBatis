@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
 
-    <!--MyBatis特有配置-->
-    <settings>
-        <!--配置日志-->
-        <setting name="logImpl" value="STDOUT_LOGGING"/>
-    </settings>
+<configuration>
+    <!--  &lt;!&ndash;MyBatis特有配置&ndash;&gt;
+      <settings>
+          &lt;!&ndash;配置日志&ndash;&gt;
+          <setting name="logImpl" value="STDOUT_LOGGING"/>
+      </settings>-->
+    <!-- 配置Mybatis的开发环境-->
+    <environments default="whatever">
+        <environment id="whatever">
+            <!--事务管理方式-->
+            <transactionManager type="JDBC"/>
+            <!--   配置数据源， jdbc参数 type为POOLED(连接池)-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/wuyou?serverTimezone=CST&amp;useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="kun032713"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--配置映射文件的地址-->
+        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/CommentMapper.xml"/>
+    </mappers>
 </configuration>
